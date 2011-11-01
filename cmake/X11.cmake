@@ -27,7 +27,11 @@ set(BUILD_SHARED_LIBS YES)
 # This long line is ugly, but breaking it up to multiple lines will 
 # break on cmake 2.6. LD_FLAGS will get separated by semi-colon 
 # which is not gcc compatible
-set(NPAPI_LINK_FLAGS "-Wl,--discard-all -Wl,-Bsymbolic -Wl,-z,defs -Wl,--version-script=${FB_ROOT_DIR}/gen_templates/version_script.txt")
+if (FB_SHARED)
+    set(NPAPI_LINK_FLAGS "-Wl,-Bsymbolic -Wl,-z,defs")
+else()
+    set(NPAPI_LINK_FLAGS "-Wl,--discard-all -Wl,-Bsymbolic -Wl,-z,defs -Wl,--version-script=${FB_ROOT_DIR}/gen_templates/version_script.txt")
+endif()
 
 # GTK is required for XEmbed to work
 if (NOT FB_GUI_DISABLED)

@@ -1,0 +1,12 @@
+prefix=@PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: FireBreath
+Description: A framework that allows easy creation of powerful browser plugins
+Requires.private: gtk+-2.0
+Version: 1.6
+Libs: -L${libdir} -lfirebreath
+Cflags: -I${includedir}/firebreath/ScriptingCore -I${includedir}/firebreath/PluginCore -I${includedir}/firebreath/NpapiCore -I${includedir}/firebreath/config -I${includedir}/firebreath/gecko-sdk
+

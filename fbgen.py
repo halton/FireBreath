@@ -76,8 +76,9 @@ def Main():
     else:
         options.interactive = True
 
-    scriptDir = os.path.dirname(os.path.abspath(__file__) )
-    cfgFilename = os.path.join(scriptDir, ".fbgen.cfg")
+    scriptDir = os.path.dirname(os.path.realpath(__file__) )
+    home = os.getenv('USERPROFILE') or os.getenv('HOME')
+    cfgFilename = os.path.join(home, ".fbgen.cfg")
     cfgFile = SafeConfigParser()
     cfgFile.read(cfgFilename)
 
@@ -118,7 +119,7 @@ def Main():
     cfgFile.write(open(cfgFilename, "wb") )
 
     # Make sure we can get into the projects directory
-    basePath = os.path.join(scriptDir, "projects")
+    basePath = os.path.join(home, "projects")
     if not os.path.isdir(basePath):
         try:
             os.mkdir(basePath)
@@ -160,7 +161,7 @@ def Main():
             dirname = os.path.dirname(filename)
             if not os.path.isdir(dirname):
                 createDir(dirname)
-            tplFile = os.path.join("fbgen", "src", tpl)
+            tplFile = os.path.join(srcDir, tpl)
             print tplFile
             template = Template(tplFile)
             f = open(filename, "wb")

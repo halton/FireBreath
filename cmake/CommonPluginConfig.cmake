@@ -30,18 +30,27 @@ set(PLUGIN_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${FB_GECKOSDK_SOURCE_DIR}
     ${FB_INCLUDE_DIRS}
-    ${FB_NPAPICORE_SOURCE_DIR}
-    ${FB_ACTIVEXCORE_SOURCE_DIR}
-    ${FB_SCRIPTINGCORE_SOURCE_DIR}
     ${FB_PLUGINAUTO_SOURCE_DIR}/${FB_PLATFORM_NAME}
     ${FB_PLUGINAUTO_SOURCE_DIR}
-    ${FB_PLUGINCORE_SOURCE_DIR}
     ${FB_TEMPLATE_DEST_DIR}
     ${Boost_INCLUDE_DIRS}
     ${FBLIB_INCLUDE_DIRS}
     ${ATL_INCLUDE_DIRS}
     ${FB_CONFIG_DIR}
     )
+
+if (FB_SHARED)
+    LIST (APPEND PLUGIN_INCLUDE_DIRS
+        ${LIBFIREBREATH_INCLUDE_DIRS}
+    )
+else ()
+    LIST (APPEND PLUGIN_INCLUDE_DIRS
+        ${FB_NPAPICORE_SOURCE_DIR}
+        ${FB_ACTIVEXCORE_SOURCE_DIR}
+        ${FB_SCRIPTINGCORE_SOURCE_DIR}
+        ${FB_PLUGINCORE_SOURCE_DIR}
+    )
+endif ()
 
 if (NOT FBMAC_USE_CARBON AND NOT FBMAC_USE_COCOA)
     # As of Safari 5.1 we have to choose one even if we don't draw
@@ -131,15 +140,24 @@ endforeach()
 
 # Repititions in the following are intentional to fix linking errors due to
 # cyclic references on Linux. Don't change without testing on Linux!
-set(PLUGIN_INTERNAL_DEPS
-    PluginCore
-    ${PLUGIN_PREFIX}_PluginAuto
-    NpapiCore
-    ScriptingCore
-    PluginCore
-    ${Boost_LIBRARIES}
-    ${FBLIB_LIBRARIES}
+if (FB_SHARED)
+    set(PLUGIN_INTERNAL_DEPS
+        ${LIBFIREBREATH_LIBRARIES}
+        ${PLUGIN_PREFIX}_PluginAuto
+        ${Boost_LIBRARIES}
+        ${FBLIB_LIBRARIES}
     )
+else ()
+    set(PLUGIN_INTERNAL_DEPS
+        PluginCore
+        ${PLUGIN_PREFIX}_PluginAuto
+        NpapiCore
+        ScriptingCore
+        PluginCore
+        ${Boost_LIBRARIES}
+        ${FBLIB_LIBRARIES}
+    )
+endif ()
 
 file (GLOB GENERATED
     ${FB_TEMPLATE_DEST_DIR}/[^.]*

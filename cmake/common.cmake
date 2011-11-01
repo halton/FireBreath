@@ -19,7 +19,11 @@ if (NOT "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${FB_ROOT}")
 endif()
 
 get_filename_component (FB_ROOT_DIR "${FB_ROOT}/cmake/.." ABSOLUTE CACHE)
-get_filename_component (FB_SOURCE_DIR "${FB_ROOT}/cmake/../src" ABSOLUTE CACHE)
+if (FB_SHARED)
+    get_filename_component (FB_SOURCE_DIR "${FB_ROOT}/cmake/.." ABSOLUTE CACHE)
+else ()
+    get_filename_component (FB_SOURCE_DIR "${FB_ROOT}/cmake/../src" ABSOLUTE CACHE)
+endif ()
 get_filename_component (FB_TEST_DIR "${FB_ROOT}/cmake/../tests" ABSOLUTE CACHE)
 
 set (FB_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}")

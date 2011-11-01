@@ -93,6 +93,13 @@ set (SOURCES
     ${X11_SOURCES}
     )
 
+file (GLOB GENERAL_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    *.h
+    )
+file (GLOB EVENTS_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    PluginEvents/*.h
+    )
+
 if (APPLE)
     FIND_LIBRARY(FOUNDATION NAMES foundation)
     include_directories(${FOUNDATION}/Headers)
@@ -105,9 +112,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "FireBreath Core")
 export(TARGETS PluginCore APPEND FILE ${FB_EXPORT_FILE})
 
 if (FB_RELEASE)
-    install (TARGETS PluginCore
-        EXPORT FireBreath_Exports
-        DESTINATION bin/\${BUILD_TYPE}
-        COMPONENT FBCORE
-        )
+#    install (TARGETS PluginCore
+#        EXPORT FireBreath_Exports
+#        DESTINATION lib/firebreath/\${BUILD_TYPE}
+#        COMPONENT FBCORE
+#        )
+    install (FILES ${GENERAL_HEADERS}
+        DESTINATION include/firebreath/${PROJECT_NAME}
+        COMPONENT devels)
+    install (FILES ${EVENTS_HEADERS}
+        DESTINATION include/firebreath/${PROJECT_NAME}/PluginEvents
+        COMPONENT devels)
 endif()

@@ -93,6 +93,14 @@ set (SOURCES
     ${X11_SOURCES}
     )
 
+file (GLOB GENERAL_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    *.h
+    )
+
+file (GLOB GECKO_SDK_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    ../3rdParty/gecko-sdk/includes/*.h
+    )
+
 ADD_PRECOMPILED_HEADER(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "FireBreath Core")
@@ -109,9 +117,15 @@ target_link_libraries(${PROJECT_NAME}
 
 export(TARGETS NpapiCore APPEND FILE ${FB_EXPORT_FILE})
 if (FB_RELEASE)
-    install (TARGETS NpapiCore
-        EXPORT FireBreath_Exports
-        DESTINATION bin/\${BUILD_TYPE}
-        COMPONENT FBCORE
-        )
+#    install (TARGETS NpapiCore
+#        EXPORT FireBreath_Exports
+#        DESTINATION lib/firebreath/\${BUILD_TYPE}
+#        COMPONENT FBCORE
+#        )
+    install (FILES ${GENERAL_HEADERS}
+        DESTINATION include/firebreath/${PROJECT_NAME}
+        COMPONENT devels)
+    install (FILES ${GECKO_SDK_HEADERS}
+        DESTINATION include/firebreath/gecko-sdk
+        COMPONENT devels)
 endif()

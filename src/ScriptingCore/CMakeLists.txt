@@ -92,7 +92,30 @@ set (SOURCES
     ${GENERAL}
     )
 
-ADD_PRECOMPILED_HEADER("${PROJECT_NAME}" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_headers.cpp" SOURCES)
+file (GLOB GENERAL_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    *.h
+    )
+file (GLOB DOM_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    DOM/*.h
+    )
+file (GLOB UTIL_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    Util/*.h
+    )
+
+file (GLOB CONFIG_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    ../config/*.h
+    )
+
+file (GLOB UTF8_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    ../3rdParty/utf8/*.h
+    )
+
+file (GLOB UTF8_UTF8_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    ../3rdParty/utf8/utf8/*.h
+    )
+
+ADD_PRECOMPILED_HEADER("${PROJECT_NAME}" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_devels.h" "${CMAKE_CURRENT_SOURCE_DIR}/precompiled_devels.cpp" SOURCES)
+
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME}
@@ -104,10 +127,28 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "FireBreath Core")
 
 export(TARGETS ScriptingCore APPEND FILE ${FB_EXPORT_FILE})
 if (FB_RELEASE)
-    install (TARGETS ScriptingCore
-        EXPORT FireBreath_Exports
-        DESTINATION bin/\${BUILD_TYPE}
-        COMPONENT FBCORE
-        )
+#    install (TARGETS ScriptingCore
+#        EXPORT FireBreath_Exports
+#        DESTINATION lib/firebreath/\${BUILD_TYPE}
+#        COMPONENT FBCORE
+#        )
+    install (FILES ${GENERAL_HEADERS}
+        DESTINATION include/firebreath/${PROJECT_NAME}
+        COMPONENT devels)
+    install (FILES ${DOM_HEADERS}
+        DESTINATION include/firebreath/${PROJECT_NAME}/DOM
+        COMPONENT devels)
+    install (FILES ${UTIL_HEADERS}
+        DESTINATION include/firebreath/${PROJECT_NAME}/Util
+        COMPONENT devels)
+    install (FILES ${CONFIG_HEADERS} 
+        DESTINATION include/firebreath/config
+	COMPONENT devels)
+    install (FILES ${UTF8_HEADERS} 
+        DESTINATION include/firebreath/3rdParty/utf8
+	COMPONENT devels)
+    install (FILES ${UTF8_UTF8_HEADERS} 
+        DESTINATION include/firebreath/3rdParty/utf8/utf8
+	COMPONENT devels)
 endif()
 

@@ -21,20 +21,34 @@ if (VERBOSE)
     message ("Generating project ${PROJECT_NAME} in ${CMAKE_CURRENT_BINARY_DIR}")
 endif()
 
-include_directories(
-    ${FB_GECKOSDK_SOURCE_DIR}
-    ${GTK_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${FB_TEMPLATE_DEST_DIR}
-    ${FB_CONFIG_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${FB_PLUGINCORE_SOURCE_DIR}
-    ${FB_SCRIPTINGCORE_SOURCE_DIR}
-    ${FB_NPAPICORE_SOURCE_DIR}
-    ${FB_ACTIVEXCORE_SOURCE_DIR}
-    ${ATL_INCLUDE_DIRS}
-    ${FBLIB_INCLUDE_DIRS}
+if (NOT FB_SHARED)
+    include_directories(
+        ${FB_GECKOSDK_SOURCE_DIR}
+        ${GTK_INCLUDE_DIRS}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${FB_TEMPLATE_DEST_DIR}
+        ${FB_CONFIG_DIR}
+        ${Boost_INCLUDE_DIRS}
+        ${FB_PLUGINCORE_SOURCE_DIR}
+        ${FB_SCRIPTINGCORE_SOURCE_DIR}
+        ${FB_NPAPICORE_SOURCE_DIR}
+        ${FB_ACTIVEXCORE_SOURCE_DIR}
+        ${ATL_INCLUDE_DIRS}
+        ${FBLIB_INCLUDE_DIRS}
     )
+else ()
+    include_directories(
+        ${FB_GECKOSDK_SOURCE_DIR}
+        ${GTK_INCLUDE_DIRS}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${FB_TEMPLATE_DEST_DIR}
+        ${FB_CONFIG_DIR}
+        ${Boost_INCLUDE_DIRS}
+        ${LIBFIREBREATH_INCLUDE_DIRS}
+        ${ATL_INCLUDE_DIRS}
+        ${FBLIB_INCLUDE_DIRS}
+    )
+endif ()
 
 file (GLOB COMMON RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     [^.]*.cpp
